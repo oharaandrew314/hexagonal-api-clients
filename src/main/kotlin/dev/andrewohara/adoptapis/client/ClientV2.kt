@@ -1,6 +1,8 @@
 package dev.andrewohara.adoptapis.client
 
+import org.http4k.client.JavaHttpClient
 import org.http4k.core.*
+import org.http4k.filter.ClientFilters
 import org.http4k.format.Moshi.auto
 import org.http4k.lens.Path
 import org.http4k.lens.uuid
@@ -14,7 +16,10 @@ import java.util.UUID
  *
  * Supports the new "favouriteFood" parameter we want to display.
  */
-class ClientV2(private val backend: HttpHandler) {
+class ClientV2(host: String) {
+
+    private val backend = ClientFilters.SetHostFrom(Uri.of(host))
+        .then(JavaHttpClient())
 
     object Lenses {
         val catId = Path.uuid().of("id")

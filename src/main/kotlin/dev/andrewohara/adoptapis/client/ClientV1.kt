@@ -1,6 +1,10 @@
 package dev.andrewohara.adoptapis.client
 
+import dev.andrewohara.adoptapis.Breed
+import dev.andrewohara.adoptapis.Cat
+import org.http4k.client.JavaHttpClient
 import org.http4k.core.*
+import org.http4k.filter.ClientFilters
 import java.io.IOException
 import java.time.Instant
 import java.util.Properties
@@ -8,10 +12,13 @@ import java.util.Properties
 /**
  * The original API was designed to perfectly satisfy our UI requirements.
  */
-class ClientV1(private val backend: HttpHandler) {
+class ClientV1(host: String) {
 
-    operator fun get(id: Int): CatDtoV1? {
-        val response = Request(Method.GET, "cats")
+    private val backend = ClientFilters.SetHostFrom(Uri.of(host))
+        .then(JavaHttpClient())
+
+    operator fun get(id: Int): Cat? {
+        val response = Request(Method.GET, "api/cats")
             .query("cat_id", id.toString())
             .let(backend)
 
@@ -25,35 +32,17 @@ class ClientV1(private val backend: HttpHandler) {
             props.load(reader)
         }
 
-        return CatDtoV1(
-            id = id,
+        return Cat(
+            id = id.toString(),
             name = props.getProperty("name"),
-            ownerId = props.getProperty("owner_id").toInt(),
+            ownerId = props.getProperty("owner_id"),
             ownerName = props.getProperty("owner_name"),
             brown = props.getProperty("brown") == "1",
             grey = props.getProperty("grey") == "1",
-            breed = props.getProperty("breed")?.let { BreedV1.valueOf(it) },
+            breed = Breed.valueOf(props.getProperty("breed")),
             appointments = props.getProperty("appointments")
                 .split(",")
                 .map { Instant.ofEpochSecond(it.toLong()) }
         )
     }
 }
-
-/**
- * This Schema was designed to satisfy the requirements for our internal model.
- * The v1 client could return it directly, but we've made an explicit V1 DTO to follow hexagonal architecture.
- * This decouples the various API schemas from our internal model, and allows our model to evolve independently.
- */
-data class CatDtoV1(
-    val id: Int,
-    val name: String,
-    val ownerId: Int,
-    val ownerName: String,
-    val brown: Boolean,
-    val grey: Boolean,
-    val breed: BreedV1?,
-    val appointments: List<Instant>
-)
-
-enum class BreedV1 { persian, american_short_hair, maine_coon }

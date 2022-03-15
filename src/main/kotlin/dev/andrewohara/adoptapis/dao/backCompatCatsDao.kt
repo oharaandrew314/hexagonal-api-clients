@@ -10,3 +10,10 @@ fun CatsDao.Companion.toggled(flag: FeatureFlag, v1: CatsDao, v2: CatsDao) = Cat
     val dao = if (treatment == "v1") v1 else v2
     dao[id]
 }
+
+/**
+ * This CatsDao will delegate to v1 if the id is an integer.  Otherwise, v2.
+ */
+fun CatsDao.Companion.backCompat(v1: CatsDao, v2: CatsDao) = CatsDao { id ->
+    v2[id] ?: v1[id]
+}
