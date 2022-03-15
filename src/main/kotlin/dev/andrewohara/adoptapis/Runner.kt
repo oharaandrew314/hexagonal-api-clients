@@ -3,8 +3,8 @@ package dev.andrewohara.adoptapis
 import dev.andrewohara.adoptapis.dao.*
 
 fun main() {
-    val v1 = CatsDao.v1("http://catshop.com/api")
-    val v2 = CatsDao.v2("https://api.catshop.com")
+    val v1 = CatsDao.v1("http://catdocs.com.com/api")
+    val v2 = CatsDao.v2("https://api.catdocs.com")
 
     val apiFeatureFlag = FeatureFlag.static(
         treatments = mapOf("123" to "v1", "456" to "v2"),

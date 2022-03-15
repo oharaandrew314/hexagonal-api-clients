@@ -38,5 +38,6 @@ fun CatDtoV1.toModel() = Cat(
         BreedV1.maine_coon -> Breed.maine_coon
         null -> null
     },
-    appointments = appointments
+    appointments = appointments,
+    favouriteFood = null
 )

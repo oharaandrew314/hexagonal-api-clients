@@ -38,5 +38,6 @@ fun CatDtoV2.toModel(appointments: List<AppointmentDtoV2>) = Cat(
         BreedV2.MaineCoon -> Breed.maine_coon
         else -> null  // ignore new breeds we don't understand
     },
-    appointments = appointments.map { it.time }
+    appointments = appointments.map { it.time },
+    favouriteFood = favouriteFood
 )

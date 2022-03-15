@@ -23,6 +23,7 @@ class CatUi(private val cats: CatsDao) {
                 <b>Is Grey:</b> $isGrey<br/>
                 <b>Breed:</b> ${cat.breed}<br/>
                 <b>Latest Appointment:</b> $latestAppointment<br/>
+                <b>Favourite Food:</b> ${cat.favouriteFood}<br/>
             </body></html>
         """
     }

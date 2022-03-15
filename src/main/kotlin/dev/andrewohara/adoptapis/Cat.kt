@@ -13,7 +13,8 @@ data class Cat(
     val brown: Boolean,
     val grey: Boolean,
     val breed: Breed?,
-    val appointments: List<Instant>
+    val appointments: List<Instant>,
+    val favouriteFood: String?
 )
 
 enum class Breed { persian, american_short_hair, maine_coon }
