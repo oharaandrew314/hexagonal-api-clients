@@ -3,7 +3,7 @@ package dev.andrewohara.adoptapis.dao
 import dev.andrewohara.adoptapis.FeatureFlag
 
 /**
- * This CatsDao will delegate to the v1 or v2 implementation, depending on the state of a feature flag.
+ * This adapter will delegate to the v1 or v2 implementation, depending on the state of a feature flag.
  */
 fun CatsDao.Companion.toggled(flag: FeatureFlag, v1: CatsDao, v2: CatsDao) = CatsDao { id ->
     val treatment = flag[id]
@@ -12,7 +12,7 @@ fun CatsDao.Companion.toggled(flag: FeatureFlag, v1: CatsDao, v2: CatsDao) = Cat
 }
 
 /**
- * This CatsDao will delegate to v1 if the id is an integer.  Otherwise, v2.
+ * This adapter will delegate to v1 if the id is an integer.  Otherwise, v2.
  */
 fun CatsDao.Companion.backCompat(v1: CatsDao, v2: CatsDao) = CatsDao { id ->
     v2[id] ?: v1[id]

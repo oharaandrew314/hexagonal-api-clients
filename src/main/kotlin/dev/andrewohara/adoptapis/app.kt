@@ -11,9 +11,6 @@ class CatUi(private val cats: CatsDao) {
 
     fun renderCatHtml(id: String): String {
         val cat = cats[id] ?: return "<h1>Cat $id not found</h1>"
-
-        val isBrown = if (cat.brown) "Yes" else "No"
-        val isGrey = if (cat.grey) "Yes" else "No"
         val latestAppointment = cat.appointments.maxOrNull()
 
         val optionalField = if (cat.favouriteFood != null) {
@@ -25,8 +22,7 @@ class CatUi(private val cats: CatsDao) {
                 <h1>${cat.name}</h1>
                 <h2>Owner: ${cat.ownerId}</h2>
                 
-                <b>Is Brown:</b> $isBrown<br/>
-                <b>Is Grey:</b> $isGrey<br/>
+                <b>Colours:</b> ${cat.colours.joinToString(",")}<br/>
                 <b>Breed:</b> ${cat.breed}<br/>
                 <b>Latest Appointment:</b> $latestAppointment<br/>
                 $optionalField
